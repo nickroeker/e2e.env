@@ -8,7 +8,7 @@ cwd = path.abspath(path.dirname(__file__))
 with open(path.join(cwd, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-version = '0.1.0.dev0'
+version = '0.1.0'
 
 name = 'e2e.env'
 description = "Easily model and convert environment variables you care about."
