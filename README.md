@@ -41,19 +41,21 @@ SERVICE_PORT = int(os.getenv(ENVNAME_SERVICE_PORT))
 ```
 
 In one swoop, we can map the environment variables as well as their
-conversions to native types, and fetch either the value or the name::
+conversions to native types, and fetch either the value or the name:
 
-    class ServiceVars(e2e.env.EnvMapper):
-        host: str = 'COMPANY_APP_HOST'
-        port: int = 'COMPANY_APP_PORT'
+```python
+class ServiceVars(e2e.env.EnvMapper):
+    host: str = 'COMPANY_APP_HOST'
+    port: int = 'COMPANY_APP_PORT'
 
-    # Get the port via instance
-    print(ServiceVars().port)   # 8080
-    type(ServiceVars().port)    # <class 'int'>
+# Get the port via instance
+print(ServiceVars().port)   # 8080
+type(ServiceVars().port)    # <class 'int'>
 
-    # Get the name of the port environment variable via class
-    print(ServiceVars.port)     # COMPANY_APP_PORT
-    type(ServiceVars.port)      # <class 'str'>
+# Get the name of the port environment variable via class
+print(ServiceVars.port)     # COMPANY_APP_PORT
+type(ServiceVars.port)      # <class 'str'>
+```
 
 ## Using your own "converters"
 
@@ -74,10 +76,6 @@ This essentially gets shuffled into `int(os.getenv('COMPANY_APP_PORT'))`. So
 any callable that can take a single `str` in its constructor and return the
 appropriate type will work.
 
-## Combining mappings
-
-You can have
-
 ## Production use
 
 The code is incredibly simple, and will adhere to these contracts:
@@ -88,18 +86,19 @@ The code is incredibly simple, and will adhere to these contracts:
   would be reasonably expected.
 - Access of a mapping without an annotation will raise a `TypeError` with the
   mapping name and model class.
--
 
 \* Open for discussion. Returning `None` could work. Passing `None` to the type
 converter usually won't produce consistent behaviour across types, and so can't
 be determined as a special case (e.g. `str(None)` gives `"None"`, `int(None)`
-raises a `TypeError`).
+raises a `TypeError`). See
+[Issue #1](https://github.com/nickroeker/e2e.env/issues/1) for more info.
 
 ## Future work
 
 - Support `raise_on_dne` or something similar to change what happens when an
-  environment variable is not found. Please add a thumbs-up for Issue #1 if
-  you'd like to see this feature.
+  environment variable is not found. Please add a thumbs-up for
+  [Issue #1](https://github.com/nickroeker/e2e.env/issues/1) if you'd like to
+  see this feature.
     ```python
     class ServiceVars(e2e.env.EnvMapper, raise_on_dne=False): ...
     ```
@@ -107,5 +106,6 @@ raises a `TypeError`).
     class ServiceVars(e2e.env.EnvMapper, dne=lambda: None): ...
     ```
 - Support for combining mappings into one larger mapping, for organizational
-  purposes. Please add a thumbs-up for Issue #2 if you'd like to see this
-  feature.
+  purposes. Please add a thumbs-up for
+  [Issue #2](https://github.com/nickroeker/e2e.env/issues/2) if you'd like to
+  see this feature.
